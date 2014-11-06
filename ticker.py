@@ -1,4 +1,4 @@
-import time, json, requests, xlsxwriter, datetime, time
+import time, json, requests, xlsxwriter, datetime, time, csv
 
 
 
@@ -49,14 +49,23 @@ def profit():
 '''Create arrays to store BitCoin Values '''
 coinbaseValue = []
 localbitcoinValue = []
-
-'''Creates Array To Store Times'''
-timeKeeperUpdater = []
+##
+##'''Creates Array To Store Times'''
+##timeKeeperUpdater = []
 
 def timeKeeper():
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
     print (st)
+
+
+def Export():
+    with open('Trythisnew2.csv', 'w', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
+        for x in coinbaseValue:
+            spamwriter.writerow(coindBaseValue[x])
+    
+
 
 while True:
     
@@ -74,6 +83,7 @@ while True:
     print ("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
     timeKeeper()
     print("\n")
+    Export()
 ##    coinbaseValue.append(coinbaseUSDLive)
 ##    print (coinbaseValue)
 ##    localbitcoinValue.append(localbitcoinLive)
@@ -81,5 +91,7 @@ while True:
   
 
     time.sleep(5)
+
+
 
 
