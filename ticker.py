@@ -1,4 +1,6 @@
-import time, json, requests
+import time, json, requests, xlsxwriter, datetime, time
+
+
 
 def coinbase():
     coinBaseTick = requests.get('https://coinbase.com/api/v1/prices/buy') # replace buy with spot_rate, sell etc
@@ -42,8 +44,22 @@ def profit():
     else:
         a = localbitcoinLive
         return (a * 100)/ coinbaseUSDLive
-  
+
+
+'''Create arrays to store BitCoin Values '''
+coinbaseValue = []
+localbitcoinValue = []
+
+'''Creates Array To Store Times'''
+timeKeeperUpdater = []
+
+def timeKeeper():
+    ts = time.time()
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    print (st)
+
 while True:
+    
 
     print ("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
     print ("Coinbase Price in USD =", coinbaseUSDLive)
@@ -56,6 +72,14 @@ while True:
     print ("________________________________________")
     print ("profit =", profit() , "%")
     print ("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
+    timeKeeper()
     print("\n")
-    
-    time.sleep(2)
+##    coinbaseValue.append(coinbaseUSDLive)
+##    print (coinbaseValue)
+##    localbitcoinValue.append(localbitcoinLive)
+##    print (localbitcoinValue)
+  
+
+    time.sleep(5)
+
+
