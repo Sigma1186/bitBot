@@ -1,5 +1,5 @@
-import time, json, requests, xlsxwriter, datetime, time, csv
 
+import time, json, requests, xlsxwriter, datetime, time, csv
 
 
 def coinbase():
@@ -39,33 +39,68 @@ def findLargerUSD():
 def profit():
     if findLargerUSD() == coinbaseUSDLive:
         a = coinbaseUSDLive
-        return(a * 100)/localbitcoinLive
+        print((a * 100)/localbitcoinLive)
 
     else:
         a = localbitcoinLive
-        return (a * 100)/ coinbaseUSDLive
+        print((a * 100)/ coinbaseUSDLive)
 
 
 '''Create arrays to store BitCoin Values '''
 coinbaseValue = []
 localbitcoinValue = []
+time1 = []
+spread1 = []
+coinbaseValueCSV = [0]
+localbitcoinValueCSV = [0]
+timeCSV = [0]
+spreadCSV = [0]
 ##
 ##'''Creates Array To Store Times'''
 ##timeKeeperUpdater = []
 
 def timeKeeper():
+
     ts = time.time()
-    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    print (st)
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d%H%M%S')
+    time1.append(ts)
 
+def readableTimeKeeper():
 
-def Export():
-    with open('Trythisnew2.csv', 'w', newline='') as csvfile:
-        spamwriter = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
-        for x in coinbaseValue:
-            spamwriter.writerow(coindBaseValue[x])
+    tk = time.time()
+    kt = datetime.datetime.fromtimestamp(tk).strftime('%Y-%m-%d %H:%M:%S')
+    print (kt)
+    
+def Spread():
+    result = float(abs(coinbaseUSDLive - localbitcoinLive))
+    print ("Profit = ", result)
+    spread1.append(result)
+
     
 
+
+##def exportXl():
+##    with open('Almoste.csv', 'a', newline='') as csvfile:
+##        spamwriter = csv.writer(csvfile, delimiter=' ',
+##                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+##        spamwriter.writerow(coinbaseValueCSV + localbitcoinValueCSV + timeCSV + spreadCSV )
+####        spamwriter.writerow(localbitcoinValueCSV)
+####        spamwriter.writerow(timeCSV)
+####        spamwriter.writerow(spreadCSV)
+
+
+
+def exportXL():
+    with open('Final.csv', 'a') as f:
+        writer = csv.writer(f)
+        writer.writerows(zip(localbitcoinValueCSV, coinbaseValueCSV,spreadCSV, timeCSV))
+
+def updateCSV():
+
+    coinbaseValueCSV[0] = coinbaseValue[-1]
+    localbitcoinValueCSV[0] = localbitcoinValue[-1]
+    timeCSV[0] = time1[-1]
+    spreadCSV[0] = spread1[-1]
 
 while True:
     
@@ -75,22 +110,35 @@ while True:
     print ("________________________________________")
     print ("Localbitcoin Price in USD = ", localbitcoinLive)
     print ("________________________________________")
-    print ("Spread = ", float(abs(coinbaseUSDLive - localbitcoinLive)))
-    print ("________________________________________")
-    print (findLarger())
-    print ("________________________________________")
-    print ("profit =", profit() , "%")
-    print ("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-    timeKeeper()
-    print("\n")
-    Export()
-##    coinbaseValue.append(coinbaseUSDLive)
-##    print (coinbaseValue)
-##    localbitcoinValue.append(localbitcoinLive)
-##    print (localbitcoinValue)
-  
 
-    time.sleep(5)
+    Spread()
+
+    print ("________________________________________")
+
+    print (findLarger())
+
+    print ("________________________________________")
+
+    profit()
+                              
+    print ("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
+
+    readableTimeKeeper()
+
+    print("\n")
+
+    coinbaseValue.append(coinbaseUSDLive)
+    
+    localbitcoinValue.append(localbitcoinLive)
+
+    timeKeeper()
+
+    updateCSV()
+
+    exportXL()
+    
+
+    time.sleep(300)
 
 
 
